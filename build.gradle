@@ -1,7 +1,7 @@
 // In this section you declare where to find the dependencies of your project
 
 allprojects {
-	//group 'org.media-player'
+	group 'org.mediaplayer'
     version '1.0-SNAPSHOT'
 }
 
