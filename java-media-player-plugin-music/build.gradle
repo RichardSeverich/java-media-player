@@ -1,3 +1,8 @@
+jar {
+    from ('./src/main/java') {
+        include 'META-INF/services/org.mediaplayer.IMediaPlayerPlugin'
+    }
+}
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile project(":java-media-player-plugin")

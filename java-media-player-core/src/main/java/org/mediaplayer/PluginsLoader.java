@@ -52,10 +52,11 @@ public class PluginsLoader {
     private static File[] buscarPlugins() {
         //crea lista vacia de archivos
         Vector<File> vUrls = new Vector<File>();
-
         //si existe el directorio "plugins" continua
         File directorioPlugins = new File(DIRECTORIO_PLUGINS);
-        if (directorioPlugins.exists() && directorioPlugins.isDirectory()) {
+        boolean dirPluginsExist = directorioPlugins.exists();
+        boolean dirPluginsIsDirectory = directorioPlugins.isDirectory();
+        if (dirPluginsExist && dirPluginsIsDirectory) {
 
             //obtiene todos los archivos con la extension .jar
             File[] jars = directorioPlugins.listFiles(new FilenameFilter() {
@@ -82,11 +83,9 @@ public class PluginsLoader {
      * @return lista de plugins encontrados e instanciados
      */
     public static IMediaPlayerPlugin[] getPlugins() {
-
-        //cargamos todas las implementaciones de IPluginMensaje
+        //cargamos todas las implementaciones de IMediaPlayerPlugin
         //encontradas en el classpath
-        ServiceLoader<IMediaPlayerPlugin> sl =
-                ServiceLoader.load(IMediaPlayerPlugin.class);
+        ServiceLoader<IMediaPlayerPlugin> sl = ServiceLoader.load(IMediaPlayerPlugin.class);
         sl.reload();
 
         //crea una lista vacia de plugins IPluginMensaje

@@ -1,7 +1,4 @@
-package org.mediaplayer.products;
-
-import org.mediaplayer.IMediaPlayerFile;
-import org.mediaplayer.IMediaPlayerPlugin;
+package org.mediaplayer;
 
 public class PluginMusic implements IMediaPlayerPlugin {
     @Override
