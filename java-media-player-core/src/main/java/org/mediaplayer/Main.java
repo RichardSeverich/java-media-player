@@ -4,10 +4,10 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("-------------------------------");
-
+        PluginsLoader pluginsLoader = new PluginsLoader();
 
         //se cargan los jars del directorio "plugins" al classpath
-        boolean cargados = PluginsLoader.cargarPlugins();
+        boolean cargados = pluginsLoader.loadPlugins();
 
         if (cargados) {
             try {

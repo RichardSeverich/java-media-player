@@ -1,5 +1,7 @@
 package org.mediaplayer;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.MalformedURLException;
@@ -7,41 +9,45 @@ import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.Vector;
 
+/**
+ * Class.
+ */
 public class PluginsLoader {
 
-    private static final String EXTENSION_JAR = ".jar";
-    private static final String DIRECTORIO_PLUGINS = "plugins/";
+    private static final String EXTENSION_PLUGINS = ".jar";
+    private static final String PATH_PLUGINS = "plugins/";
+    private static final Logger LOGGER = Logger.getLogger(PluginsLoader.class);
+    private File[] listPluginFiles;
+    private ClassPathModifier classPathModifier;
+
+    public PluginsLoader() {
+        //Get the list of jar files inside the plugins path.
+        this.listPluginFiles = searchPlugins();
+        this.classPathModifier = new ClassPathModifier();
+    }
 
     /**
-     * carga los plugins encontrados al classpath
+     * Carga los plugins encontrados al classpath
      *
      * @return true si se cargaron los plugins,
      * false en caso de existir algun error
      */
-    public static boolean cargarPlugins() {
-        boolean cargados = true;
-        try {
-            //obtiene el listado de archivos .jar dentro del directorio
-            File[] jars = buscarPlugins();
-
-            if (jars.length > 0) {
-                ClassPathModifier cp = new ClassPathModifier();
-
-                //a cada jar lo incluye al classpath
-                for (File jar : jars) {
-                    try {
-                        cp.addArchivo(jar);
-                    } catch (MalformedURLException ex) {
-                        System.err.println("URL incorrecta: " +
-                                ex.getMessage());
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            cargados = false;
-            System.err.println(ex.getMessage());
+    public boolean loadPlugins() {
+        boolean flag = false;
+        if (listPluginFiles.length > 0) {
+            addEachPluginToClassPath();
+            flag = true;
         }
-        return cargados;
+        return flag;
+    }
+
+    /**
+     * add Each Plugin to ClassPath.
+     */
+    public void addEachPluginToClassPath() {
+        for (File jarFile : listPluginFiles) {
+            classPathModifier.addFile(jarFile);
+        }
     }
 
     /**
@@ -49,11 +55,11 @@ public class PluginsLoader {
      *
      * @return jars del directorio de plugins
      */
-    private static File[] buscarPlugins() {
+    private static File[] searchPlugins() {
         //crea lista vacia de archivos
         Vector<File> vUrls = new Vector<File>();
         //si existe el directorio "plugins" continua
-        File directorioPlugins = new File(DIRECTORIO_PLUGINS);
+        File directorioPlugins = new File(PATH_PLUGINS);
         boolean dirPluginsExist = directorioPlugins.exists();
         boolean dirPluginsIsDirectory = directorioPlugins.isDirectory();
         if (dirPluginsExist && dirPluginsIsDirectory) {
@@ -63,7 +69,7 @@ public class PluginsLoader {
 
                 @Override
                 public boolean accept(File dir, String name) {
-                    return name.endsWith(EXTENSION_JAR);
+                    return name.endsWith(EXTENSION_PLUGINS);
                 }
             });
 

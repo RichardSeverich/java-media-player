@@ -6,35 +6,57 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import org.apache.log4j.Logger;
+
+/**
+ * Class.
+ */
 public class ClassPathModifier {
 
-    private static final String METODO_ADD_URL = "addURL";
-    private static final Class[] PARAMETRO_METODO = new Class[]{URL.class};
-    private final URLClassLoader loader;
-    private final Method metodoAdd;
+    private static final String ADD_URL = "addURL";
+    private static final Class[] PARAMETER_METHOD = new Class[]{URL.class};
+    private Method methodAdd;
+    private URLClassLoader loader;
+    private static final Logger LOGGER = Logger.getLogger(ClassPathModifier.class);
 
-    public ClassPathModifier() throws NoSuchMethodException {
-        loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-        metodoAdd = URLClassLoader.class.getDeclaredMethod(
-                METODO_ADD_URL, PARAMETRO_METODO);
-        metodoAdd.setAccessible(true);
+    /**
+     * ClassPathModifier.
+     */
+    public ClassPathModifier() {
+        try {
+            this.loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+            this.methodAdd = URLClassLoader.class.getDeclaredMethod(ADD_URL, PARAMETER_METHOD);
+        } catch (Exception ex) {
+            String message = "Error ".concat(ex.getMessage());
+            LOGGER.error(message);
+        }
+        this.methodAdd.setAccessible(true);
     }
 
+    /**
+     * @return URL.
+     */
     public URL[] getURLs() {
         return loader.getURLs();
     }
 
+    /**
+     * @param url url.
+     */
     public void addURL(URL url) {
         if (url != null) {
             try {
-                metodoAdd.invoke(loader, new Object[]{url});
+                methodAdd.invoke(loader, url);
             } catch (Exception ex) {
-                System.err.println("Excepcion al guardar URL: " +
-                        ex.getLocalizedMessage());
+                String message = "Exception add URL: ".concat(ex.getLocalizedMessage());
+                LOGGER.error(message);
             }
         }
     }
 
+    /**
+     * @param urls urls.
+     */
     public void addURLs(URL[] urls) {
         if (urls != null) {
             for (URL url : urls) {
@@ -43,13 +65,25 @@ public class ClassPathModifier {
         }
     }
 
-    public void addArchivo(File archivo) throws MalformedURLException {
-        if (archivo != null) {
-            addURL(archivo.toURI().toURL());
+    /**
+     * @param file file.
+     */
+    public void addFile(final File file) {
+        if (file != null) {
+            try {
+                addURL(file.toURI().toURL());
+            } catch (MalformedURLException ex) {
+                String message = "Add Exception: ".concat(ex.getMessage());
+                LOGGER.error(message);
+            }
         }
+
     }
 
-    public void addArchivo(String nombreArchivo) throws MalformedURLException {
-        addArchivo(new File(nombreArchivo));
+    /**
+     * @param filePath filePath.
+     */
+    public void addFile(String filePath) {
+        addFile(new File(filePath));
     }
 }
