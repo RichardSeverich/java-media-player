@@ -7,7 +7,8 @@ public class Main {
         LoaderPluginFiles loaderPluginFiles = new LoaderPluginFiles();
         LoaderClassPath loaderClassPath = new LoaderClassPath(loaderPluginFiles);
         //se cargan los jars del directorio "plugins" al classpath
-        boolean cargados = loaderClassPath.addPluginsFilesToClassPath();
+        loaderClassPath.addPluginsFilesToClassPath();
+        boolean cargados = loaderClassPath.isPluginsFilesAdded();
 
         if (cargados) {
             try {
