@@ -10,6 +10,9 @@ public class LoaderPlugins {
     private ServiceLoader<IMediaPlayerPlugin> serviceLoader;
     private List<IMediaPlayerPlugin> listPlugins;
 
+    /**
+     * Constructor.
+     */
     LoaderPlugins() {
         // Found IMediaPlayerPlugin in classpath.
         this.serviceLoader = ServiceLoader.load(IMediaPlayerPlugin.class);

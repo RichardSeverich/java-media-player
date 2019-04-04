@@ -13,13 +13,16 @@ public class LoaderClassPath {
     private ClassPathModifier classPathModifier;
     private boolean isPluginsFilesAdded;
 
+    /**
+     * @param loaderPluginFiles loaderPluginFiles.
+     */
     public LoaderClassPath(LoaderPluginFiles loaderPluginFiles) {
         this.arrayPluginsFiles = loaderPluginFiles.getPluginFiles();
         this.classPathModifier = new ClassPathModifier();
     }
 
     /**
-     *
+     * addPluginsFilesToClassPath.
      */
     public void addPluginsFilesToClassPath() {
         this.isPluginsFilesAdded = false;
@@ -29,6 +32,9 @@ public class LoaderClassPath {
         }
     }
 
+    /**
+     * @return true, if all plugins files are added to class path.
+     */
     public boolean isPluginsFilesAdded() {
         return isPluginsFilesAdded;
     }

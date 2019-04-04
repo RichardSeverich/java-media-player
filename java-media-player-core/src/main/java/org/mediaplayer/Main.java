@@ -6,29 +6,21 @@ public class Main {
         System.out.println("-------------------------------");
         LoaderPluginFiles loaderPluginFiles = new LoaderPluginFiles();
         LoaderClassPath loaderClassPath = new LoaderClassPath(loaderPluginFiles);
-        //se cargan los jars del directorio "plugins" al classpath
         loaderClassPath.addPluginsFilesToClassPath();
-        boolean cargados = loaderClassPath.isPluginsFilesAdded();
-
-        if (cargados) {
-            try {
-                //obtiene una instancia de cada plugin IPluginMensaje encontrado
-                LoaderPlugins loaderPlugins = new LoaderPlugins();
-                IMediaPlayerPlugin[] arrayDePlugins = loaderPlugins.getListPlugins();
-
-                if (arrayDePlugins.length > 0) {
-                    for (IMediaPlayerPlugin a : arrayDePlugins) {
-                        //por cada plugin muestra la clase y el mensaje que devuelve
-                        System.out.println("Plugin: \t" + a.getClass().getCanonicalName());
-                        System.out.println("Mensaje:\t" + a.getType());
-                        System.out.println();
-                    }
-                } else {
-                    System.out.println("No se Encontraron Plugins");
+        // Verifica si se cargaron jar al class path.
+        if (loaderClassPath.isPluginsFilesAdded()) {
+            //obtiene una instancia de cada plugin IMediaPlayerPlugin encontrado.
+            LoaderPlugins loaderPlugins = new LoaderPlugins();
+            IMediaPlayerPlugin[] arrayDePlugins = loaderPlugins.getListPlugins();
+            if (arrayDePlugins.length > 0) {
+                for (IMediaPlayerPlugin a : arrayDePlugins) {
+                    //por cada plugin muestra la clase y el mensaje que devuelve
+                    System.out.println("Plugin: \t" + a.getClass().getCanonicalName());
+                    System.out.println("Mensaje:\t" + a.getType());
+                    System.out.println();
                 }
-            } catch (Exception ex) {
-                System.err.println("Excepcion: " + ex.getMessage());
-                ex.printStackTrace();
+            } else {
+                System.out.println("No se Encontraron Plugins");
             }
         } else {
             System.out.println("Plugins No Cargados");
