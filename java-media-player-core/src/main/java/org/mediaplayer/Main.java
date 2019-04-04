@@ -4,16 +4,16 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("-------------------------------");
-        PluginsLoader pluginsLoader = new PluginsLoader();
-
+        LoaderPluginFiles loaderPluginFiles = new LoaderPluginFiles();
+        LoaderClassPath loaderClassPath = new LoaderClassPath(loaderPluginFiles);
         //se cargan los jars del directorio "plugins" al classpath
-        boolean cargados = pluginsLoader.loadPlugins();
+        boolean cargados = loaderClassPath.addPluginsFilesToClassPath();
 
         if (cargados) {
             try {
                 //obtiene una instancia de cada plugin IPluginMensaje encontrado
-                LoadPlugins loadPlugins = new LoadPlugins();
-                IMediaPlayerPlugin[] arrayDePlugins = loadPlugins.getListPlugins();
+                LoaderPlugins loaderPlugins = new LoaderPlugins();
+                IMediaPlayerPlugin[] arrayDePlugins = loaderPlugins.getListPlugins();
 
                 if (arrayDePlugins.length > 0) {
                     for (IMediaPlayerPlugin a : arrayDePlugins) {

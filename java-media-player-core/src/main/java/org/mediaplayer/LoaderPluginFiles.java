@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Class.
  */
-public class LoadPluginFiles {
+public class LoaderPluginFiles {
 
     private static final String EXTENSION_PLUGINS = ".jar";
     private static final String PATH_PLUGINS = "plugins/";
@@ -19,7 +19,7 @@ public class LoadPluginFiles {
     /**
      * Constructor.
      */
-    LoadPluginFiles() {
+    LoaderPluginFiles() {
         this.filePluginsPath = new File(PATH_PLUGINS);
         this.listPluginsFiles = new ArrayList<>();
     }
@@ -36,7 +36,7 @@ public class LoadPluginFiles {
      */
     private void addPluginsFileToList() {
         if (this.arrayPluginsFile != null) {
-            listPluginsFiles.addAll(Collections.singletonList(filePluginsPath));
+            Collections.addAll(this.listPluginsFiles, this.arrayPluginsFile);
         }
     }
 
@@ -51,25 +51,14 @@ public class LoadPluginFiles {
     }
 
     /**
-     * @return Plugin Files.
+     * @return getPluginFiles.
      */
     public File[] getPluginFiles() {
         if (isValidPluginsPath()) {
-            searchPluginsFiles();
-            addPluginsFileToList();
+            this.searchPluginsFiles();
+            this.addPluginsFileToList();
         }
         return listPluginsFiles.toArray(new File[0]);
     }
-
-    public File[] searchPlugins() {
-        boolean dirPluginsExist = filePluginsPath.exists();
-        boolean dirPluginsIsDirectory = filePluginsPath.isDirectory();
-        if (dirPluginsExist && dirPluginsIsDirectory) {
-            this.arrayPluginsFile = filePluginsPath.listFiles((dir, name) -> name.endsWith(EXTENSION_PLUGINS));
-            Collections.addAll(this.listPluginsFiles, this.arrayPluginsFile);
-        }
-        return listPluginsFiles.toArray(new File[0]);
-    }
-
 }
 

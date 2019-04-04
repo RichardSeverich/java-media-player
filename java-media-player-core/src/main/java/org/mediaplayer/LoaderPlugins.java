@@ -5,12 +5,12 @@ import java.util.*;
 /**
  * Service Loader.
  */
-public class LoadPlugins {
+public class LoaderPlugins {
 
     private ServiceLoader<IMediaPlayerPlugin> serviceLoader;
     private List<IMediaPlayerPlugin> listPlugins;
 
-    LoadPlugins() {
+    LoaderPlugins() {
         // Found IMediaPlayerPlugin in classpath.
         this.serviceLoader = ServiceLoader.load(IMediaPlayerPlugin.class);
         this.listPlugins = new ArrayList<>();
