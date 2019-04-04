@@ -12,7 +12,8 @@ public class Main {
         if (cargados) {
             try {
                 //obtiene una instancia de cada plugin IPluginMensaje encontrado
-                IMediaPlayerPlugin[] arrayDePlugins = PluginsLoader.getPlugins();
+                LoadPlugins loadPlugins = new LoadPlugins();
+                IMediaPlayerPlugin[] arrayDePlugins = loadPlugins.getListPlugins();
 
                 if (arrayDePlugins.length > 0) {
                     for (IMediaPlayerPlugin a : arrayDePlugins) {

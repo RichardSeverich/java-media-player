@@ -5,24 +5,19 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.MalformedURLException;
-import java.util.Iterator;
-import java.util.ServiceLoader;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Class.
  */
 public class PluginsLoader {
-
-    private static final String EXTENSION_PLUGINS = ".jar";
-    private static final String PATH_PLUGINS = "plugins/";
-    private static final Logger LOGGER = Logger.getLogger(PluginsLoader.class);
+    
     private File[] listPluginFiles;
     private ClassPathModifier classPathModifier;
 
     public PluginsLoader() {
-        //Get the list of jar files inside the plugins path.
-        this.listPluginFiles = searchPlugins();
+        LoadPluginFiles loadPluginFiles = new LoadPluginFiles();
+        this.listPluginFiles = loadPluginFiles.searchPlugins();
         this.classPathModifier = new ClassPathModifier();
     }
 
@@ -50,65 +45,4 @@ public class PluginsLoader {
         }
     }
 
-    /**
-     * Busca todos los jars de en el directorio de plugins
-     *
-     * @return jars del directorio de plugins
-     */
-    private static File[] searchPlugins() {
-        //crea lista vacia de archivos
-        Vector<File> vUrls = new Vector<File>();
-        //si existe el directorio "plugins" continua
-        File directorioPlugins = new File(PATH_PLUGINS);
-        boolean dirPluginsExist = directorioPlugins.exists();
-        boolean dirPluginsIsDirectory = directorioPlugins.isDirectory();
-        if (dirPluginsExist && dirPluginsIsDirectory) {
-
-            //obtiene todos los archivos con la extension .jar
-            File[] jars = directorioPlugins.listFiles(new FilenameFilter() {
-
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.endsWith(EXTENSION_PLUGINS);
-                }
-            });
-
-            //los agrega a la lista de archivos
-            for (File jar : jars) {
-                vUrls.add(jar);
-            }
-        }
-
-        //retorna todos los archivos encontrados
-        return vUrls.toArray(new File[0]);
-    }
-
-    /**
-     * Obtiene todos los plugins IPluginMensaje encontrados en el classpath
-     *
-     * @return lista de plugins encontrados e instanciados
-     */
-    public static IMediaPlayerPlugin[] getPlugins() {
-        //cargamos todas las implementaciones de IMediaPlayerPlugin
-        //encontradas en el classpath
-        ServiceLoader<IMediaPlayerPlugin> sl = ServiceLoader.load(IMediaPlayerPlugin.class);
-        sl.reload();
-
-        //crea una lista vacia de plugins IPluginMensaje
-        Vector<IMediaPlayerPlugin> vAv = new Vector<IMediaPlayerPlugin>();
-
-        //cada plugin encontrado es agregado a la lista
-        for (Iterator<IMediaPlayerPlugin> it = sl.iterator(); it.hasNext(); ) {
-            try {
-                IMediaPlayerPlugin pl = it.next();
-                vAv.add(pl);
-            } catch (Exception ex) {
-                System.err.println("Excepcion al obtener plugin: " +
-                        ex.getMessage());
-            }
-        }
-
-        //retorna los plugins encontrados y cargados
-        return vAv.toArray(new IMediaPlayerPlugin[0]);
-    }
 }
