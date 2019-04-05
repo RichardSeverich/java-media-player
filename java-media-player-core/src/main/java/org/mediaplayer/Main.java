@@ -16,14 +16,14 @@ public class Main {
                 for (IMediaPlayerPlugin a : arrayDePlugins) {
                     //por cada plugin muestra la clase y el mensaje que devuelve
                     System.out.println("Plugin: \t" + a.getClass().getCanonicalName());
-                    System.out.println("Mensaje:\t" + a.getType());
+                    System.out.println("fileType:\t" + a.getFileType());
                     System.out.println();
                 }
             } else {
-                System.out.println("No se Encontraron Plugins");
+                System.out.println("No se Encontraron Plugins en el class path");
             }
         } else {
-            System.out.println("Plugins No Cargados");
+            System.out.println("Plugins No Cargados al class path");
         }
 
         System.out.println("-------------------------------");

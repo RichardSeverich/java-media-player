@@ -11,18 +11,18 @@ import org.apache.log4j.Logger;
 /**
  * Class.
  */
-public class ClassPathModifier {
+public class LoaderClassPathModifier {
 
     private static final String ADD_URL = "addURL";
     private static final Class[] PARAMETER_METHOD = new Class[]{URL.class};
     private Method methodAdd;
     private URLClassLoader loader;
-    private static final Logger LOGGER = Logger.getLogger(ClassPathModifier.class);
+    private static final Logger LOGGER = Logger.getLogger(LoaderClassPathModifier.class);
 
     /**
-     * ClassPathModifier.
+     * LoaderClassPathModifier.
      */
-    public ClassPathModifier() {
+    public LoaderClassPathModifier() {
         try {
             this.loader = (URLClassLoader) ClassLoader.getSystemClassLoader();
             this.methodAdd = URLClassLoader.class.getDeclaredMethod(ADD_URL, PARAMETER_METHOD);

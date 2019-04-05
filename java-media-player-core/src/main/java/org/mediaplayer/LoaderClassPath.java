@@ -3,14 +3,13 @@ package org.mediaplayer;
 
 import java.io.File;
 
-
 /**
  * Class.
  */
 public class LoaderClassPath {
 
     private File[] arrayPluginsFiles;
-    private ClassPathModifier classPathModifier;
+    private LoaderClassPathModifier loaderClassPathModifier;
     private boolean isPluginsFilesAdded;
 
     /**
@@ -18,7 +17,7 @@ public class LoaderClassPath {
      */
     public LoaderClassPath(LoaderPluginFiles loaderPluginFiles) {
         this.arrayPluginsFiles = loaderPluginFiles.getPluginFiles();
-        this.classPathModifier = new ClassPathModifier();
+        this.loaderClassPathModifier = new LoaderClassPathModifier();
     }
 
     /**
@@ -44,7 +43,7 @@ public class LoaderClassPath {
      */
     private void addEachPluginFileToClassPath() {
         for (File pluginFile : arrayPluginsFiles) {
-            classPathModifier.addFile(pluginFile);
+            loaderClassPathModifier.addFile(pluginFile);
         }
     }
 
